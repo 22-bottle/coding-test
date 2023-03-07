@@ -1,6 +1,2 @@
 def solution(n):
-    answer = []
-    while n > 0:
-        answer.append(n % 10)
-        n = n // 10
-    return answer
+    return list(reversed([int(i) for i in str(n)]))
