@@ -27,7 +27,6 @@ public class Solution {
 					if ((i & (1 << j)) != 0) {
 						cur_taste += tastes[j];
 						cur_calorie += calories[j];
-						if (cur_calorie > L) break;
 					}
 				}
 				if (cur_calorie <= L && cur_taste > max_taste) {
