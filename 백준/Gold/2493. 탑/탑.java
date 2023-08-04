@@ -26,20 +26,20 @@ public class Main {
 			}
 			if (s.isEmpty()) {
 				ans[i] = 0;
-				s.add(i);
-				s.add(arr[i]);
 			} else {
 				int temp = s.pop();
 				ans[i] = s.peek() + 1;
 				s.add(temp);
-				s.add(i);
-				s.add(arr[i]);
 			}
+            s.add(i);
+            s.add(arr[i]);
 		}
 		
-		for (int i = 0; i < N; i++) {
-			System.out.print(ans[i] + " ");
+		StringBuilder sb = new StringBuilder();
+		for (int i : ans) {
+			sb.append(i+" ");
 		}
+		System.out.println(sb.toString());
 	}
 
 }
