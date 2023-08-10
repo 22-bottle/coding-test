@@ -1,64 +1,54 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.StringTokenizer;
-
+import java.util.Scanner;
 public class Main {
-	
-	static int T, M, N, K;
-	static boolean[][] map;
+	static int w, h, k, answer;
+	static int[] dr = {0, 1, 0, -1};
+	static int[] dc = {1, 0, -1, 0};
+	static int[][] map;
+	static Queue<int[]> q = new LinkedList();
 
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		T = Integer.parseInt(br.readLine());
-		for (int tc = 1; tc <= T; tc++) {
-			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-			M = Integer.parseInt(st.nextToken());
-			N = Integer.parseInt(st.nextToken());
-			K = Integer.parseInt(st.nextToken());
-			map = new boolean[M][N];
-			for (int i = 0; i < K; i++) {
-				st = new StringTokenizer(br.readLine(), " ");
-				map[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())] = true;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		for(int tc = 1; tc <= t; tc++) {
+			answer = 0;
+			w = sc.nextInt();  // 가로 길이
+			h = sc.nextInt();  // 세로 길이
+			k = sc.nextInt();  // 배추 개수
+			map = new int[h][w];
+			for (int i = 0; i < k; i++) {
+				int c = sc.nextInt();
+				int r = sc.nextInt();
+				map[r][c] = 1;
 			}
 			
-			int count = 0;
-			for (int i = 0; i < M; i++) {
-				for (int j = 0; j < N; j++) {
-					if (map[i][j]) {
-						count++;
-						bfs(i, j);
+			for (int i = 0; i < h; i++) {
+				for (int j = 0; j < w; j++) {
+					if(map[i][j] == 1) {
+						q.add(new int[] {i, j});
+						bfs();
 					}
 				}
 			}
-			sb.append(count + "\n");			
+			System.out.println(answer);
 		}
-		System.out.println(sb);
 	}
 	
-	private static void bfs(int x, int y) {
-		Queue<int[]> q = new ArrayDeque<>();
-		int[] dr = {-1, 0, 1, 0};
-		int[] dc = {0, 1, 0, -1};
-		
-		q.offer(new int[] {x, y});
-		map[x][y] = false;
-		while (!q.isEmpty()) {
-			int[] cur = q.poll();
+	private static void bfs() {
+		answer++;
+		while(!q.isEmpty()) {
+			int[] temp = q.poll();
+//			map[temp[0]][temp[1]] = 0;
 			for (int i = 0; i < 4; i++) {
-				int cur_r = cur[0] + dr[i];
-				int cur_c = cur[1] + dc[i];
-				if (cur_r < 0 || cur_r >= M || cur_c < 0 || cur_c >= N) {
-					continue;
-				}
-				if (map[cur_r][cur_c]) {
-					q.offer(new int[] {cur_r, cur_c});
-					map[cur_r][cur_c] = false;
+				int nr = temp[0] + dr[i];
+				int nc = temp[1] + dc[i];
+				if(nr >= 0 && nr < h && nc >= 0 && nc < w && map[nr][nc] == 1) {
+					q.add(new int[] {nr, nc});
+					map[nr][nc] = 0;
 				}
 			}
 		}
 	}
-
 }
