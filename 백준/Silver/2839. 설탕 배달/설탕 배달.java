@@ -1,22 +1,25 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+import java.util.*;
 public class Main {
-
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		int _5kg = N / 5;
-		int left = N % 5;
-		while (left % 3 != 0 && _5kg >= 0) {
-			_5kg--;
-			left += 5;
-		}
-		if (_5kg < 0) System.out.println(-1);
-		else {
-			int _3kg = left / 3;
-			System.out.println(_5kg + _3kg);
+	static int n, answer;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		answer = Integer.MAX_VALUE;
+		
+		func(5,3);
+		func(3,5);
+		if(answer == Integer.MAX_VALUE) {
+			System.out.println(-1);
+		}else System.out.println(answer);
+	}
+	
+	private static void func(int num1, int num2) {
+		for (int i = 1; i <= (n / num1); i++) {
+			if((n - num1*i) % num2 == 0) {
+				int tempN = n - num1*i;
+				int temp = tempN / num2;
+				answer = Math.min(answer, temp+i);
+			}
 		}
 	}
-
 }
