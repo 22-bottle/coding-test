@@ -1,28 +1,23 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int l = sc.nextInt();
+		int[] h = new int[n];
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		int N = Integer.parseInt(st.nextToken());
-		int L = Integer.parseInt(st.nextToken());
-		int[] fruits = new int[N];
-		st = new StringTokenizer(br.readLine(), " ");
-		for (int i = 0; i < N; i++) {
-			fruits[i] = Integer.parseInt(st.nextToken());
+		for (int i = 0; i < n; i++) {
+			h[i] = sc.nextInt();
 		}
-		Arrays.sort(fruits);
-		for (int fruit: fruits) {
-			if (L >= fruit) {
-				L++;
-			}
+		
+		Arrays.sort(h);
+		for (int i = 0; i < n; i++) {
+			if(l >= h[i]) l++;
+			else break;
 		}
-		System.out.println(L);
+		System.out.println(l);
+		
 	}
 
 }
