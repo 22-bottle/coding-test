@@ -1,34 +1,37 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.util.*;
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[][] time = new int[n][2];
+		int answer = 1;
+		Stack<int[]> stack = new Stack<int[]>();
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		int[][] meetings = new int[N][];
-		for (int i = 0; i < N; i++) {
-			StringTokenizer st =  new StringTokenizer(br.readLine(), " ");
-			meetings[i] = new int[] {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+		for (int i = 0; i < n; i++) {
+			time[i][0] = sc.nextInt();
+			time[i][1] = sc.nextInt();
 		}
-		Arrays.sort(meetings, (o1, o2) -> { 
-			if (o1[1] == o2[1]) {
-				return o1[0] - o2[0];
-			}
-			return o1[1] - o2[1];
+		Arrays.sort(time, new Comparator<int[]>() { 
+		    @Override
+		    public int compare(int[] o1, int[] o2) {
+		        return o1[1]!=o2[1] ? o1[1]-o2[1] : o1[0]-o2[0];
+		    }
 		});
-		int cur_end = -1;
-		int count = 0;
-		for (int i = 0; i < N; i++) {
-			if (meetings[i][0] >= cur_end) {
-				cur_end = meetings[i][1];
-				count++;
+		
+		int i = 0; 
+		int j = 1;
+
+		while(i < n-1 && j < n) {
+			if(time[i][1] <= time[j][0]) {
+				i = j;
+				j = i + 1;
+				answer++;
 			}
+			else j++;
 		}
-		System.out.println(count);
+		
+		System.out.println(answer);
 	}
 
 }
