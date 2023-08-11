@@ -1,42 +1,29 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+import java.util.*;
 public class Main {
-	
-	static int[] drawfs, sel;
-
-	public static void main(String[] args) throws Exception {
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		drawfs = new int[9];
-		sel = new int[7];
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int[] arr = new int[9];
+		
 		for (int i = 0; i < 9; i++) {
-			drawfs[i] = Integer.parseInt(br.readLine());
+			arr[i] = sc.nextInt();
 		}
-		comb(0, 0);
+		
+		recursive(arr, new int[7], 0, 0, 0);
+		
 	}
-	
-	private static void comb(int cnt, int start) {
-		if (cnt == 7) {
-			if (sum() == 100) {
-				for (int drawf: sel) {
-					System.out.println(drawf);
+	private static void recursive(int[] arr, int[] sel, int idx, int k, int sum) {
+		if(k == sel.length) {
+			if(sum == 100) {
+				for (int i = 0; i < sel.length; i++) {
+					System.out.println(sel[i]);
 				}
 			}
 			return;
 		}
-		for (int i = start; i < 9; i++) {
-			sel[cnt] = drawfs[i];
-			comb(cnt + 1, i + 1);
-		}
-	}
-	
-	private static int sum() {
-		int sum = 0;
-		for (int drawf: sel) {
-			sum += drawf;
-		}
-		return sum;
-	}
 
+		for(int i = idx; i < arr.length; i++){
+			sel[k] = arr[i];
+			recursive(arr, sel, i+1, k+1, sum+arr[i]);
+		}
+	}
 }
