@@ -32,12 +32,14 @@ public class Main {
 		//basis
 		//출력
 		if (n < 0) {
+			StringBuilder sb = new StringBuilder();
 			for (int i = 1; i <= (1 << k); i++) {
 				for (int j = 1; j <= (1 << k); j++) {
-					System.out.print(paper[i][j] + " ");
+					sb.append(paper[i][j]).append(" ");
 				}
-				System.out.println();
+				sb.append("\n");
 			}
+			System.out.println(sb);
 			return;
 		}
 		//inductive
