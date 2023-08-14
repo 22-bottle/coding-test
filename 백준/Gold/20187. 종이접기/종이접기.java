@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -13,19 +12,32 @@ public class Main {
 		//입력
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		k = Integer.parseInt(br.readLine());
-		int cur_r = 1 << k, cur_c = 1 << k;
-		paper = new int[cur_r + 1][cur_c + 1];
+		int top = 1, left = 1;
+		int bottom = 1 << k, right = 1 << k;
+		paper = new int[bottom + 1][right + 1];
 		fold = new String[2 * k];
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 		for (int i = 0; i < 2 * k; i++) {
 			fold[i] = st.nextToken();
 			//시작 위치 조정
-			if (fold[i].equals("L")) cur_c = cur_c / 2;
-			else if (fold[i].equals("U")) cur_r = cur_r / 2;
+			if (fold[i].equals("D")) {
+				int half = (bottom - top + 1) / 2;
+				top += half;
+			} else if (fold[i].equals("U")) {
+				int half = (bottom - top + 1) / 2;
+				bottom -= half;
+			} else if (fold[i].equals("R")) {
+				int half = (right - left + 1) / 2;
+				left += half;
+			}
+			else if (fold[i].equals("L")) {
+				int half = (right - left + 1) / 2;
+				right -= half;
+			}
 		}
-		paper[cur_r][cur_c] = Integer.parseInt(br.readLine());
+		paper[top][left] = Integer.parseInt(br.readLine());
 		
-		unfold(2 * k - 1, cur_r, cur_r, cur_c, cur_c);
+		unfold(2 * k - 1, top, bottom, left, right);
 	}
 	
 	private static void unfold(int n, int top, int bottom, int left, int right) { //편 횟수와 현재 범위를 가지고 한 번 펼치는 함수
@@ -39,7 +51,7 @@ public class Main {
 				}
 				sb.append("\n");
 			}
-			System.out.println(sb);
+			System.out.print(sb);
 			return;
 		}
 		//inductive
