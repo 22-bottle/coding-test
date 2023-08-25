@@ -52,9 +52,11 @@ public class Main {
 			}
 		}
 		
+		StringBuilder sb = new StringBuilder();
 		for (int i = 1; i <= V; i++) {
-			System.out.println(dist[i] != Integer.MAX_VALUE ? dist[i] : "INF");
+			sb.append(dist[i] != Integer.MAX_VALUE ? dist[i] : "INF").append('\n');
 		}
+		System.out.println(sb);
 		
 	}
 
