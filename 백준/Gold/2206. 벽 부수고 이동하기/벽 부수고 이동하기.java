@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 	
-	static int N, M, map[][], answer;
+	static int N, M, map[][];
 	static boolean visited[][][];
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
@@ -25,13 +25,11 @@ public class Main {
 			}
 		}
 		visited = new boolean[N][M][2];
-		
-		answer = move();
-		System.out.println(answer);
+		System.out.println(bfs());
 		
 	}
 	
-	private static int move() {
+	private static int bfs() {
 		Queue<int[]> q = new ArrayDeque<>();
 		q.offer(new int[] {0, 0, 0, 1});
 		visited[0][0][0] = true;
@@ -44,11 +42,10 @@ public class Main {
 				int nr = cur[0] + dr[d];
 				int nc = cur[1] + dc[d];
 				if (nr < 0 || nr >= N || nc < 0 || nc >= M) continue;
-				if (!visited[nr][nc][cur[2]] && map[nr][nc] == 0) {
+				if (map[nr][nc] == 0 && !visited[nr][nc][cur[2]]) {
 					q.offer(new int[] {nr, nc, cur[2], cur[3] + 1});
 					visited[nr][nc][cur[2]] = true;
-				}
-				else if (!visited[nr][nc][cur[2]] && map[nr][nc] == 1 && cur[2] == 0) {
+				} else if (map[nr][nc] == 1 && cur[2] == 0 && !visited[nr][nc][cur[2] + 1]) {
 					q.offer(new int[] {nr, nc, cur[2] + 1, cur[3] + 1});
 					visited[nr][nc][cur[2] + 1] = true;
 				}
