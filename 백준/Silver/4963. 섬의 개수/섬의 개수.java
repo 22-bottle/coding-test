@@ -1,53 +1,57 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
 public class Main {
-	static int[] dr = {0, 1, 1, 1, -1, 0, -1, -1};
-	static int[] dc = {1, 1, 0, -1, -1, -1, 1, 0};
-	static int[][] map;
-	static int w, h;
-	static boolean flag = true;
 	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	static int w, h, map[][];
+	static int[] dr = {-1, 1, 0, 0, -1, -1, 1, 1};
+	static int[] dc = {0, 0, -1, 1, -1, 1, -1, 1};
+
+	public static void main(String[] args) throws Exception {
 		
-		while(true) {
-			w = sc.nextInt();
-			h = sc.nextInt();
-			int answer = 0;
-			
-			if(w == 0 && h == 0) break;
-			
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		while (true) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			w = Integer.parseInt(st.nextToken());
+			h = Integer.parseInt(st.nextToken());
+			if (w == 0) break;
 			map = new int[h][w];
 			for (int i = 0; i < h; i++) {
+				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < w; j++) {
-					map[i][j] = sc.nextInt();
+					map[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
+			int num = 2;
 			for (int i = 0; i < h; i++) {
 				for (int j = 0; j < w; j++) {
-					dfs(i, j);
-					if(flag) answer ++;
+					if (map[i][j] == 1) {
+						bfs(i, j, num);
+						num++;
+					}
 				}
 			}
-			System.out.println(answer);
+			System.out.println(num == 2 ? 0 : num - 2);
 		}
 	}
 	
-	private static void dfs(int r, int c) {
-		
-		if(map[r][c] == 0) {
-			flag = false;
-			return;
-		}
-		else {
-			map[r][c] = 0;
-			flag = true;
-		}
-		
-		for (int i = 0; i < 8; i++) {
-			int ny = r + dr[i];
-			int nc = c + dc[i];
-			if(ny >= 0 && ny < h && nc >= 0 && nc < w && map[ny][nc] == 1) {
-				dfs(ny, nc);
+	private static void bfs(int r, int c, int n) {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {r, c});
+		map[r][c] = n;
+		while (!q.isEmpty()) {
+			int[] cur = q.poll();
+			for (int d = 0; d < 8; d++) {
+				int nr = cur[0] + dr[d];
+				int nc = cur[1] + dc[d];
+				if (nr < 0 || nr >= h || nc < 0 || nc >= w) continue;
+				if (map[nr][nc] == 1) {
+					map[nr][nc] = n;
+					q.offer(new int[] {nr, nc});
+				}
 			}
 		}
 	}
