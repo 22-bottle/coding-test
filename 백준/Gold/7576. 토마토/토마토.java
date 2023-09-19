@@ -1,59 +1,47 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
 public class Main {
-	static int m, n, zeroCnt, zero;
-	static int[][] map;
-	static int[] dr = {0, 1, 0, -1};
-	static int[] dc = {1, 0, -1, 0};
-	static int day = 0;
-	static boolean flag = true;
-	static Queue<int[]> q = new LinkedList();
-
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		m = sc.nextInt();
-		n = sc.nextInt();
-		map = new int[n][m];
-		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				map[i][j] = sc.nextInt();
-			}
-		}
-		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if(map[i][j] == 1) q.add(new int[] {i, j});
-				else if(map[i][j] == 0) zeroCnt++;
-			}
-		}
-		int zeroTemp = zeroCnt;
-
-		bfs();
-		if(zeroTemp - zero != 0) flag = false;
-		if(flag) System.out.println(day);
-		else System.out.println(-1);
-	}
 	
-	private static void bfs() {
-		if(zeroCnt == 0) return;
-		while(!q.isEmpty()) {
-			day++;
-			int size = q.size();
-			for (int cnt = 0; cnt < size; cnt++) {
-				int[] temp = q.poll();
-				for (int i = 0; i < 4; i++) {
-					int nr = temp[0] +dr[i];
-					int nc = temp[1] +dc[i];
-					if(nr >= 0 && nr < n && nc >= 0 && nc < m && map[nr][nc] == 0) {
-						map[nr][nc] = 1;
-						zeroCnt--;
-						zero++;
-						if(zeroCnt == 0) return;
-						
-						q.add(new int[] {nr, nc});
-					}
+	static int N, M, board[][], cnt = 0;
+	static Queue<int[]> tomatoes = new ArrayDeque<>();
+	static int[] dr = {-1, 1, 0, 0};
+	static int[] dc = {0, 0, -1, 1};
+
+	public static void main(String[] args) throws Exception {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
+		board = new int[N][M];
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				board[i][j] = Integer.parseInt(st.nextToken());
+				if (board[i][j] == 1) tomatoes.offer(new int[] {i, j, 0});
+				else if (board[i][j] == 0) cnt++;
+			}
+		}
+		int[] cur = null;
+		while (!tomatoes.isEmpty()) {
+			cur = tomatoes.poll();
+			for (int d = 0; d < 4; d++) {
+				int nr = cur[0] + dr[d];
+				int nc = cur[1] + dc[d];
+				if(nr < 0 || nr >= N || nc < 0 || nc >= M) continue;
+				if (board[nr][nc] == 0) {
+					tomatoes.offer(new int[] {nr, nc, cur[2] + 1});
+					board[nr][nc] = 1;
+					cnt--;
 				}
 			}
 		}
+		if (cnt > 0) System.out.println(-1);
+		else System.out.println(cur[2]);
 	}
+
 }
