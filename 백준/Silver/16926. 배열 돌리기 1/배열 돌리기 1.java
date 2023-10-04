@@ -1,56 +1,61 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	static int n, m, k;
-	static int[][] map;
-	static int[] dr = {0, 1, 0, -1};
-	static int[] dc = {1, 0, -1, 0};
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		m = sc.nextInt();
-		k = sc.nextInt();
-		map = new int[n][m];
+
+	static int N, M, R, input[][], result[][];
+	
+	public static void main(String[] args) throws Exception {
 		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				map[i][j] = sc.nextInt();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		input = new int[N][M];
+		result = new int[N][M];
+		R = Integer.parseInt(st.nextToken());
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				input[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for (int l = 0; l < k; l++) {
-			int step = Math.min(n, m) / 2;  // 몇 번 돌릴지 횟수 저장
-			for (int d = 0; d < step; d++) {
-				// 시작점 설정 
-				int startR = d;
-				int startC = d;
-				
-				// 벽이 나오면 방향 전환
-				int dir = 0;
-				
-				// 시작점 값 저장
-				int temp = map[startR][startC];
-				while(dir < 4) {
-					int nr = startR + dr[dir];
-					int nc = startC + dc[dir];
-					if(nr >= d && nr < n-d && nc >= d && nc < m-d) {
-						map[startR][startC] = map[nr][nc];
-						startR = nr;
-						startC = nc;
-					}else dir++;
+		int sr = 0; int er = N - 1;
+		int sc = 0;	int ec = M - 1;
+		while ((er - sr) >= 1 && (ec - sc) >= 1) {
+			int cur_re = R % ((er - sr + ec - sc) << 1);
+			for (int i = sr ; i <= er; i++) {
+				for (int j = sc; j <= ec; j++) {
+					if ((i != sr && i != er) && (j != sc && j != ec)) continue;
+					int cur_r = i;
+					int cur_c = j;
+					for (int k = 0; k < cur_re; k++) {
+						if (cur_r == sr && cur_c != sc) {
+							cur_c--;
+						} else if (cur_r != er && cur_c == sc) {
+							cur_r++;
+						} else if (cur_r == er && cur_c != ec) {
+							cur_c++;
+						} else if (cur_r != sr && cur_c == ec) {
+							cur_r--;
+						}
+					}
+					result[cur_r][cur_c] = input[i][j];
 				}
-				
-				// 이동이 끝나면, 초기 시작점 값을  마지막 이동 위치에 넣어줌
-				map[d+1][d] = temp;
 			}
+			sr++; sc++;
+			er--; ec--;
 		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				sb.append(result[i][j]).append(" ");
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb);
 		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
 	}
 
 }
