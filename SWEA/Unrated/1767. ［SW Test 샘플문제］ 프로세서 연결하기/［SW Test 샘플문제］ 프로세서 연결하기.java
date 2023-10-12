@@ -40,6 +40,7 @@ public class Solution {
 	}
 
 	private static void start(int n) {
+		if (cur_core + cores.size() - n < max_core) return;
 		if (n == cores.size()) {
 			if (cur_core > max_core) {
 				max_core = cur_core;
