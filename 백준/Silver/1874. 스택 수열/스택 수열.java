@@ -1,44 +1,33 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 public class Main {
 
-	static int T;
-	static StringBuilder sb = new StringBuilder();
-	static int temp = 1;
-	static boolean err = false;
-	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		T = Integer.parseInt(br.readLine());
-		
+		StringBuilder sb = new StringBuilder();
+		int N = Integer.parseInt(br.readLine());
+		int cur = 1;
 		Stack<Integer> stack = new Stack<>();
-
-		for(int i = 0 ; i < T ; i++) {
-			int N = Integer.parseInt(br.readLine());
-			
-			for( ; temp <= N ; temp++) {
-				stack.push(temp);
-				sb.append("+").append("\n");
+		boolean result = true;
+		for (int i = 0; i < N; i++) {
+			int num = Integer.parseInt(br.readLine());
+			while (num >= cur) {
+				stack.push(cur++);
+				sb.append('+').append('\n');
 			}
-			
-			if(stack.peek()==N) {
+			if (stack.peek() == num) {
 				stack.pop();
-				sb.append("-").append("\n");
-			}else {
-				err = true;
+				sb.append('-').append('\n');
+			} else {
+				result = false;
 			}
 		}
+		if (result) System.out.println(sb);
+		else System.out.println("NO");
 		
-		if(err)
-			System.out.println("NO");
-		else
-			System.out.println(sb);
-		}
+	}
+
 }
