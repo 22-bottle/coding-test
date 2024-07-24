@@ -2,27 +2,19 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static final int R = 31;
-    static final int M = 1234567891;
+    static final long R = 31;
+    static final long M = 1234567891;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         String s = br.readLine();
-        int result = 0;
-        for (int i = 0; i < s.length(); i++) {
-            int c = s.charAt(i) - 'a' + 1;
-            int p = power(i);
-            result += c * p % M;
+        long result = 0, p = 1;
+        for (int i = 0; i < N; i++) {
+            long c = s.charAt(i) - 'a' + 1;
+            result += c * p;
+            p = (p * R) % M;
         }
-        System.out.println(result);
-    }
-
-    public static int power(int n) {
-        int result = 1;
-        for (int i = 0; i < n; i++) {
-            result = result * R % M;
-        }
-        return result;
+        System.out.println(result % M);
     }
 }
